@@ -588,6 +588,49 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         }
     }
 
+
+    /**
+     * add new phoneNumbers to existing contact
+     * @param contacts list of contact with new phoneNumbers
+     * @param callback
+     */
+    @ReactMethod
+    public void addPhoneNumbersMultiContacts(ReadableArray contacts, Callback callback) {
+
+        Context ctx = getReactApplicationContext();
+        ContentResolver cr = ctx.getContentResolver();
+        int success = 0;
+        for (int i = 0; i < contacts.size(); i++) {
+            ReadableMap contact = contacts.getMap(i);
+            String rawContactId = contact.hasKey("rawContactId") ? contact.getString("rawContactId") : null;
+            ReadableArray phoneNumbers = contact.hasKey("phoneNumbers") ? contact.getArray("phoneNumbers") : null;
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+            if (rawContactId != null && phoneNumbers != null) {
+
+                ContentProviderOperation.Builder op;
+                for (int j = 0; j < phoneNumbers.size(); j++) {
+                    ReadableMap phoneNumber = phoneNumbers.getMap(j);
+                    op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                            .withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                            .withValue(ContactsContract.Data.MIMETYPE, CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                            .withValue(CommonDataKinds.Phone.NUMBER, phoneNumber.getString("number"))
+                            .withValue(CommonDataKinds.Phone.LABEL, "Aido")
+                            .withValue(CommonDataKinds.Phone.TYPE, CommonDataKinds.StructuredPostal.TYPE_CUSTOM);
+                    ops.add(op.build());
+                }
+            }
+
+            try {
+                cr.applyBatch(ContactsContract.AUTHORITY, ops);
+                success++;
+            } catch (Exception e) {
+                Log.e("Error", " update error for", e);
+            }
+        }
+
+        callback.invoke(null, success);
+    }
+
     /*
      * Update contact to phone's addressbook
      */
