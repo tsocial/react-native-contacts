@@ -675,8 +675,11 @@ public class ContactsManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void canDrawOverlays(Promise promise) {
-        promise.resolve(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && Settings.canDrawOverlays(mReactContext));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            promise.resolve(true);
+        } else {
+            promise.resolve(Settings.canDrawOverlays(mReactContext));
+        }
     }
 
     @ReactMethod
