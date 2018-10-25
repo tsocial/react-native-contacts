@@ -8,6 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		B63FC3151FEA3AD20051B2A4 /* RCTContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */; };
+		FAA3357E21819B9800EF9778 /* APName.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354721819B9800EF9778 /* APName.m */; };
+		FAA3357F21819B9800EF9778 /* APJob.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354921819B9800EF9778 /* APJob.m */; };
+		FAA3358021819B9800EF9778 /* APRecordDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354A21819B9800EF9778 /* APRecordDate.m */; };
+		FAA3358121819B9800EF9778 /* APEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354B21819B9800EF9778 /* APEmail.m */; };
+		FAA3358221819B9800EF9778 /* APAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354C21819B9800EF9778 /* APAddress.m */; };
+		FAA3358321819B9800EF9778 /* APPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354D21819B9800EF9778 /* APPhone.m */; };
+		FAA3358421819B9800EF9778 /* APSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354F21819B9800EF9778 /* APSource.m */; };
+		FAA3358521819B9800EF9778 /* APContactDate.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3355021819B9800EF9778 /* APContactDate.m */; };
+		FAA3358621819B9800EF9778 /* APSocialProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3355121819B9800EF9778 /* APSocialProfile.m */; };
+		FAA3358721819B9800EF9778 /* APContact.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3355321819B9800EF9778 /* APContact.m */; };
+		FAA3358821819B9800EF9778 /* APRelatedPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3355C21819B9800EF9778 /* APRelatedPerson.m */; };
+		FAA3358921819B9800EF9778 /* APAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3355E21819B9800EF9778 /* APAddressBook.m */; };
+		FAA3358A21819B9800EF9778 /* APContactListBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356221819B9800EF9778 /* APContactListBuilder.m */; };
+		FAA3358B21819B9800EF9778 /* APContactBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356421819B9800EF9778 /* APContactBuilder.m */; };
+		FAA3358C21819B9800EF9778 /* APAddressBookRefWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356621819B9800EF9778 /* APAddressBookRefWrapper.m */; };
+		FAA3358D21819B9800EF9778 /* APAddressBookExternalChangeRoutine.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356A21819B9800EF9778 /* APAddressBookExternalChangeRoutine.m */; };
+		FAA3358E21819B9800EF9778 /* APAddressBookContactsRoutine.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356D21819B9800EF9778 /* APAddressBookContactsRoutine.m */; };
+		FAA3358F21819B9800EF9778 /* APAddressBookAccessRoutine.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3356F21819B9800EF9778 /* APAddressBookAccessRoutine.m */; };
+		FAA3359021819B9800EF9778 /* APAddressBookBaseRoutine.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3357121819B9800EF9778 /* APAddressBookBaseRoutine.m */; };
+		FAA3359121819B9800EF9778 /* APContactDataExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3357421819B9800EF9778 /* APContactDataExtractor.m */; };
+		FAA3359221819B9800EF9778 /* APImageExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3357721819B9800EF9778 /* APImageExtractor.m */; };
+		FAA3359321819B9800EF9778 /* APThread.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3357A21819B9800EF9778 /* APThread.m */; };
+		FAA3359421819B9800EF9778 /* APSocialServiceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3357D21819B9800EF9778 /* APSocialServiceHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +49,55 @@
 		1441618E1BD0A79300FA4F59 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTContacts.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B63FC3131FEA3AD20051B2A4 /* RCTContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTContacts.h; sourceTree = "<group>"; };
 		B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTContacts.m; sourceTree = "<group>"; };
+		FAA3354421819B9800EF9778 /* APAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBook.h; sourceTree = "<group>"; };
+		FAA3354621819B9800EF9778 /* APContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContact.h; sourceTree = "<group>"; };
+		FAA3354721819B9800EF9778 /* APName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APName.m; sourceTree = "<group>"; };
+		FAA3354821819B9800EF9778 /* APSocialProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSocialProfile.h; sourceTree = "<group>"; };
+		FAA3354921819B9800EF9778 /* APJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APJob.m; sourceTree = "<group>"; };
+		FAA3354A21819B9800EF9778 /* APRecordDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APRecordDate.m; sourceTree = "<group>"; };
+		FAA3354B21819B9800EF9778 /* APEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APEmail.m; sourceTree = "<group>"; };
+		FAA3354C21819B9800EF9778 /* APAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddress.m; sourceTree = "<group>"; };
+		FAA3354D21819B9800EF9778 /* APPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPhone.m; sourceTree = "<group>"; };
+		FAA3354E21819B9800EF9778 /* APRelatedPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APRelatedPerson.h; sourceTree = "<group>"; };
+		FAA3354F21819B9800EF9778 /* APSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSource.m; sourceTree = "<group>"; };
+		FAA3355021819B9800EF9778 /* APContactDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContactDate.m; sourceTree = "<group>"; };
+		FAA3355121819B9800EF9778 /* APSocialProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSocialProfile.m; sourceTree = "<group>"; };
+		FAA3355221819B9800EF9778 /* APName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APName.h; sourceTree = "<group>"; };
+		FAA3355321819B9800EF9778 /* APContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContact.m; sourceTree = "<group>"; };
+		FAA3355421819B9800EF9778 /* APRecordDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APRecordDate.h; sourceTree = "<group>"; };
+		FAA3355521819B9800EF9778 /* APJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APJob.h; sourceTree = "<group>"; };
+		FAA3355621819B9800EF9778 /* APPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPhone.h; sourceTree = "<group>"; };
+		FAA3355721819B9800EF9778 /* APAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddress.h; sourceTree = "<group>"; };
+		FAA3355821819B9800EF9778 /* APEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APEmail.h; sourceTree = "<group>"; };
+		FAA3355921819B9800EF9778 /* APTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTypes.h; sourceTree = "<group>"; };
+		FAA3355A21819B9800EF9778 /* APContactDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContactDate.h; sourceTree = "<group>"; };
+		FAA3355B21819B9800EF9778 /* APSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSource.h; sourceTree = "<group>"; };
+		FAA3355C21819B9800EF9778 /* APRelatedPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APRelatedPerson.m; sourceTree = "<group>"; };
+		FAA3355D21819B9800EF9778 /* APAddressBookFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookFramework.h; sourceTree = "<group>"; };
+		FAA3355E21819B9800EF9778 /* APAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBook.m; sourceTree = "<group>"; };
+		FAA3356121819B9800EF9778 /* APContactBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContactBuilder.h; sourceTree = "<group>"; };
+		FAA3356221819B9800EF9778 /* APContactListBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContactListBuilder.m; sourceTree = "<group>"; };
+		FAA3356321819B9800EF9778 /* APContactListBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContactListBuilder.h; sourceTree = "<group>"; };
+		FAA3356421819B9800EF9778 /* APContactBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContactBuilder.m; sourceTree = "<group>"; };
+		FAA3356621819B9800EF9778 /* APAddressBookRefWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBookRefWrapper.m; sourceTree = "<group>"; };
+		FAA3356721819B9800EF9778 /* APAddressBookRefWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookRefWrapper.h; sourceTree = "<group>"; };
+		FAA3356921819B9800EF9778 /* APAddressBookContactsRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookContactsRoutine.h; sourceTree = "<group>"; };
+		FAA3356A21819B9800EF9778 /* APAddressBookExternalChangeRoutine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBookExternalChangeRoutine.m; sourceTree = "<group>"; };
+		FAA3356B21819B9800EF9778 /* APAddressBookAccessRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookAccessRoutine.h; sourceTree = "<group>"; };
+		FAA3356C21819B9800EF9778 /* APAddressBookExternalChangeRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookExternalChangeRoutine.h; sourceTree = "<group>"; };
+		FAA3356D21819B9800EF9778 /* APAddressBookContactsRoutine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBookContactsRoutine.m; sourceTree = "<group>"; };
+		FAA3356E21819B9800EF9778 /* APAddressBookExternalChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookExternalChangeDelegate.h; sourceTree = "<group>"; };
+		FAA3356F21819B9800EF9778 /* APAddressBookAccessRoutine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBookAccessRoutine.m; sourceTree = "<group>"; };
+		FAA3357121819B9800EF9778 /* APAddressBookBaseRoutine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAddressBookBaseRoutine.m; sourceTree = "<group>"; };
+		FAA3357221819B9800EF9778 /* APAddressBookBaseRoutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBookBaseRoutine.h; sourceTree = "<group>"; };
+		FAA3357421819B9800EF9778 /* APContactDataExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APContactDataExtractor.m; sourceTree = "<group>"; };
+		FAA3357521819B9800EF9778 /* APImageExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APImageExtractor.h; sourceTree = "<group>"; };
+		FAA3357621819B9800EF9778 /* APContactDataExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APContactDataExtractor.h; sourceTree = "<group>"; };
+		FAA3357721819B9800EF9778 /* APImageExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APImageExtractor.m; sourceTree = "<group>"; };
+		FAA3357921819B9800EF9778 /* APThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APThread.h; sourceTree = "<group>"; };
+		FAA3357A21819B9800EF9778 /* APThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APThread.m; sourceTree = "<group>"; };
+		FAA3357C21819B9800EF9778 /* APSocialServiceHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APSocialServiceHelper.h; sourceTree = "<group>"; };
+		FAA3357D21819B9800EF9778 /* APSocialServiceHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APSocialServiceHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +123,7 @@
 		145CC5671AED80100006342E = {
 			isa = PBXGroup;
 			children = (
+				FAA3350521819B3300EF9778 /* APAddressBook */,
 				1441618F1BD0A79300FA4F59 /* RCTContacts */,
 				145CC5711AED80100006342E /* Products */,
 			);
@@ -62,6 +135,150 @@
 				1441618E1BD0A79300FA4F59 /* libRCTContacts.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FAA3350521819B3300EF9778 /* APAddressBook */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3354221819B9800EF9778 /* Core */,
+			);
+			path = APAddressBook;
+			sourceTree = "<group>";
+		};
+		FAA3354221819B9800EF9778 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3354321819B9800EF9778 /* Public */,
+				FAA3355F21819B9800EF9778 /* Private */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		FAA3354321819B9800EF9778 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3354421819B9800EF9778 /* APAddressBook.h */,
+				FAA3354521819B9800EF9778 /* Models */,
+				FAA3355D21819B9800EF9778 /* APAddressBookFramework.h */,
+				FAA3355E21819B9800EF9778 /* APAddressBook.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		FAA3354521819B9800EF9778 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3354621819B9800EF9778 /* APContact.h */,
+				FAA3354721819B9800EF9778 /* APName.m */,
+				FAA3354821819B9800EF9778 /* APSocialProfile.h */,
+				FAA3354921819B9800EF9778 /* APJob.m */,
+				FAA3354A21819B9800EF9778 /* APRecordDate.m */,
+				FAA3354B21819B9800EF9778 /* APEmail.m */,
+				FAA3354C21819B9800EF9778 /* APAddress.m */,
+				FAA3354D21819B9800EF9778 /* APPhone.m */,
+				FAA3354E21819B9800EF9778 /* APRelatedPerson.h */,
+				FAA3354F21819B9800EF9778 /* APSource.m */,
+				FAA3355021819B9800EF9778 /* APContactDate.m */,
+				FAA3355121819B9800EF9778 /* APSocialProfile.m */,
+				FAA3355221819B9800EF9778 /* APName.h */,
+				FAA3355321819B9800EF9778 /* APContact.m */,
+				FAA3355421819B9800EF9778 /* APRecordDate.h */,
+				FAA3355521819B9800EF9778 /* APJob.h */,
+				FAA3355621819B9800EF9778 /* APPhone.h */,
+				FAA3355721819B9800EF9778 /* APAddress.h */,
+				FAA3355821819B9800EF9778 /* APEmail.h */,
+				FAA3355921819B9800EF9778 /* APTypes.h */,
+				FAA3355A21819B9800EF9778 /* APContactDate.h */,
+				FAA3355B21819B9800EF9778 /* APSource.h */,
+				FAA3355C21819B9800EF9778 /* APRelatedPerson.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FAA3355F21819B9800EF9778 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3356021819B9800EF9778 /* Builders */,
+				FAA3356521819B9800EF9778 /* Wrapper */,
+				FAA3356821819B9800EF9778 /* Routine */,
+				FAA3357321819B9800EF9778 /* Extractors */,
+				FAA3357821819B9800EF9778 /* Thread */,
+				FAA3357B21819B9800EF9778 /* Helpers */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		FAA3356021819B9800EF9778 /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3356121819B9800EF9778 /* APContactBuilder.h */,
+				FAA3356221819B9800EF9778 /* APContactListBuilder.m */,
+				FAA3356321819B9800EF9778 /* APContactListBuilder.h */,
+				FAA3356421819B9800EF9778 /* APContactBuilder.m */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
+		FAA3356521819B9800EF9778 /* Wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3356621819B9800EF9778 /* APAddressBookRefWrapper.m */,
+				FAA3356721819B9800EF9778 /* APAddressBookRefWrapper.h */,
+			);
+			path = Wrapper;
+			sourceTree = "<group>";
+		};
+		FAA3356821819B9800EF9778 /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3356921819B9800EF9778 /* APAddressBookContactsRoutine.h */,
+				FAA3356A21819B9800EF9778 /* APAddressBookExternalChangeRoutine.m */,
+				FAA3356B21819B9800EF9778 /* APAddressBookAccessRoutine.h */,
+				FAA3356C21819B9800EF9778 /* APAddressBookExternalChangeRoutine.h */,
+				FAA3356D21819B9800EF9778 /* APAddressBookContactsRoutine.m */,
+				FAA3356E21819B9800EF9778 /* APAddressBookExternalChangeDelegate.h */,
+				FAA3356F21819B9800EF9778 /* APAddressBookAccessRoutine.m */,
+				FAA3357021819B9800EF9778 /* Base */,
+			);
+			path = Routine;
+			sourceTree = "<group>";
+		};
+		FAA3357021819B9800EF9778 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3357121819B9800EF9778 /* APAddressBookBaseRoutine.m */,
+				FAA3357221819B9800EF9778 /* APAddressBookBaseRoutine.h */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		FAA3357321819B9800EF9778 /* Extractors */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3357421819B9800EF9778 /* APContactDataExtractor.m */,
+				FAA3357521819B9800EF9778 /* APImageExtractor.h */,
+				FAA3357621819B9800EF9778 /* APContactDataExtractor.h */,
+				FAA3357721819B9800EF9778 /* APImageExtractor.m */,
+			);
+			path = Extractors;
+			sourceTree = "<group>";
+		};
+		FAA3357821819B9800EF9778 /* Thread */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3357921819B9800EF9778 /* APThread.h */,
+				FAA3357A21819B9800EF9778 /* APThread.m */,
+			);
+			path = Thread;
+			sourceTree = "<group>";
+		};
+		FAA3357B21819B9800EF9778 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3357C21819B9800EF9778 /* APSocialServiceHelper.h */,
+				FAA3357D21819B9800EF9778 /* APSocialServiceHelper.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,7 +337,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA3358E21819B9800EF9778 /* APAddressBookContactsRoutine.m in Sources */,
+				FAA3358D21819B9800EF9778 /* APAddressBookExternalChangeRoutine.m in Sources */,
+				FAA3358921819B9800EF9778 /* APAddressBook.m in Sources */,
+				FAA3357F21819B9800EF9778 /* APJob.m in Sources */,
+				FAA3359021819B9800EF9778 /* APAddressBookBaseRoutine.m in Sources */,
+				FAA3358721819B9800EF9778 /* APContact.m in Sources */,
+				FAA3358221819B9800EF9778 /* APAddress.m in Sources */,
+				FAA3359121819B9800EF9778 /* APContactDataExtractor.m in Sources */,
+				FAA3358C21819B9800EF9778 /* APAddressBookRefWrapper.m in Sources */,
 				B63FC3151FEA3AD20051B2A4 /* RCTContacts.m in Sources */,
+				FAA3358A21819B9800EF9778 /* APContactListBuilder.m in Sources */,
+				FAA3357E21819B9800EF9778 /* APName.m in Sources */,
+				FAA3359321819B9800EF9778 /* APThread.m in Sources */,
+				FAA3358121819B9800EF9778 /* APEmail.m in Sources */,
+				FAA3359221819B9800EF9778 /* APImageExtractor.m in Sources */,
+				FAA3359421819B9800EF9778 /* APSocialServiceHelper.m in Sources */,
+				FAA3358021819B9800EF9778 /* APRecordDate.m in Sources */,
+				FAA3358521819B9800EF9778 /* APContactDate.m in Sources */,
+				FAA3358321819B9800EF9778 /* APPhone.m in Sources */,
+				FAA3358B21819B9800EF9778 /* APContactBuilder.m in Sources */,
+				FAA3358F21819B9800EF9778 /* APAddressBookAccessRoutine.m in Sources */,
+				FAA3358821819B9800EF9778 /* APRelatedPerson.m in Sources */,
+				FAA3358421819B9800EF9778 /* APSource.m in Sources */,
+				FAA3358621819B9800EF9778 /* APSocialProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

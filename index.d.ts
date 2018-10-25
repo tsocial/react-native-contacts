@@ -1,4 +1,5 @@
 declare module 'react-native-contacts' {
+  export function getBatch(batchSize: number, lastModificationDate: number, callback: (error: any, contacts: Contact[]) => void): void;
   export function getAll(callback: (error: any, contacts: Contact[]) => void): void;
   export function getAllWithoutPhotos(callback: (error: any, contacts: Contact[]) => void): void;
   export function getPhotoForId(contactId: string, callback: (error: any, photoUri: string) => void): void;
@@ -41,6 +42,7 @@ declare module 'react-native-contacts' {
 
   export interface Contact {
       recordID: string;
+      compositeName: string;
       company: string;
       emailAddresses: EmailAddress[];
       familyName: string;
@@ -55,5 +57,6 @@ declare module 'react-native-contacts' {
       suffix: string;
       department: string;
       birthday: Birthday;
+      modificationTimestamp: number;
   }
 }
