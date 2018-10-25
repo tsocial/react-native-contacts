@@ -3,6 +3,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "APAddressBook.h"
 #import "APContact.h"
+#import <AddressBook/AddressBook.h>
 
 @implementation RCTContacts
 
@@ -52,7 +53,7 @@ RCT_EXPORT_METHOD(getAll:(RCTResponseSenderBlock) callback)
 RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInteger) modificationDate callback :(RCTResponseSenderBlock) callback)
 {
     NSDate *modificaftionDateTime = [NSDate dateWithTimeIntervalSince1970:modificationDate];
-
+    
     [self getAllContacts:callback batchSize: batchSize filter: ^BOOL(APContact *contact) {
         NSDate *curModDate = contact.recordDate.modificationDate;
         if (curModDate) {
@@ -61,6 +62,47 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
             return false;
         }
     }];
+}
+
+RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTResponseSenderBlock)callback)
+{
+    NSString* recordID = [contactData valueForKey:@"recordID"];
+    
+    ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
+    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(addressBookRef, recordID.intValue);
+    
+    ABRecordCopyValue(recordRef, kABPersonPhoneProperty);
+    
+    ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    for (id phoneData in [contactData valueForKey:@"phoneNumbers"]) {
+        NSString *label = [phoneData valueForKey:@"label"];
+        NSString *number = [phoneData valueForKey:@"number"];
+        
+        CFStringRef phoneLabel = CFBridgingRetain(label);
+        
+        if ([label isEqual: @"main"]){
+            phoneLabel = kABPersonPhoneMainLabel;
+        }
+        else if ([label isEqual: @"mobile"]){
+            phoneLabel = kABPersonPhoneMobileLabel;
+        }
+        else if ([label isEqual: @"iPhone"]){
+            phoneLabel = kABPersonPhoneIPhoneLabel;
+        }
+        else {
+            phoneLabel = CFBridgingRetain(label);
+        }
+        ABMultiValueAddValueAndLabel(multiPhone, CFBridgingRetain(number), phoneLabel, NULL);
+    }
+    
+    ABRecordSetValue(recordRef, kABPersonPhoneProperty, multiPhone, nil);
+    
+    CFErrorRef saveError = NULL;
+    if (ABAddressBookHasUnsavedChanges(addressBookRef)) {
+        ABAddressBookSave(addressBookRef, &saveError);
+    }
+    
+    callback(@[[NSNull null], [NSNull null]]);
 }
 
 // MARK: - My Privates
@@ -131,11 +173,11 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
     for (APPhone *phone in person.phones) {
         // [phoneNumbers addObject:phone.number];
-
+        
         NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
         NSString* label = phone.localizedLabel;
         NSString* value = phone.number;
-
+        
         if(value) {
             if (value) {
                 [phoneDict setObject: value forKey:@"number"];
@@ -145,7 +187,7 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
             }
             [phoneNumbers addObject:phoneDict];
         }
-
+        
     }
     [output setObject: phoneNumbers forKey:@"phoneNumbers"];
     
@@ -153,3 +195,4 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
 }
 
 @end
+
