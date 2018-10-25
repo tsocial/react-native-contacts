@@ -23,15 +23,15 @@ RCT_EXPORT_METHOD(checkPermission:(RCTResponseSenderBlock) callback)
     switch([APAddressBook access])
     {
         case APAddressBookAccessUnknown:
-            // Application didn't request address book access yet
+            callback(@[[NSNull null], @"undefined"]);
             break;
             
         case APAddressBookAccessGranted:
-            // Access granted
+            callback(@[[NSNull null], @"authorized"]);
             break;
             
         case APAddressBookAccessDenied:
-            callback(@[[NSNull null], @"undefined"]);
+            callback(@[[NSNull null], @"denied"]);
             break;
     }
 }
@@ -195,4 +195,3 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
 }
 
 @end
-
