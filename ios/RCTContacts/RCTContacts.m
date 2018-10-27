@@ -172,8 +172,6 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
     
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
     for (APPhone *phone in person.phones) {
-        // [phoneNumbers addObject:phone.number];
-        
         NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
         NSString* label = phone.localizedLabel;
         NSString* value = phone.number;
@@ -187,9 +185,26 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
             }
             [phoneNumbers addObject:phoneDict];
         }
-        
     }
     [output setObject: phoneNumbers forKey:@"phoneNumbers"];
+    
+    NSMutableArray *emails = [[NSMutableArray alloc] init];
+    for (APEmail *email in person.emails) {
+        NSMutableDictionary* emailDict = [NSMutableDictionary dictionary];
+        NSString* label = email.localizedLabel;
+        NSString* value = email.address;
+        
+        if(value) {
+            if (value) {
+                [emailDict setObject: value forKey:@"email"];
+            }
+            if (label) {
+                [emailDict setObject: label forKey:@"label"];
+            }
+            [emails addObject:emailDict];
+        }
+    }
+    [output setObject: emails forKey:@"emailAddresses"];
     
     return output;
 }
