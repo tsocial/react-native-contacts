@@ -189,7 +189,8 @@ public class ContactsProvider {
                 ContactsContract.CommonDataKinds.Contactables.CONTACT_LAST_UPDATED_TIMESTAMP + " ASC"
         );
         try {
-            while (cursor != null && cursor.moveToNext()) {
+            int count = 0;
+            while (count < batchSize && cursor != null && cursor.moveToNext()) {
                 String id = cursor.getString(
                         cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.RAW_CONTACT_ID));
 
@@ -217,6 +218,8 @@ public class ContactsProvider {
                         contact.phoneNumbers.add(phoneNumber);
                     }
                 }
+
+                count++;
             }
         } catch (Exception ex) {
             Log.e("ContactProvider", "loadContact error" + ex.getMessage(), ex);
