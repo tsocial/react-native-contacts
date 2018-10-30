@@ -14,9 +14,12 @@ import com.facebook.react.bridge.WritableMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import static android.provider.ContactsContract.CommonDataKinds.Contactables;
 import static android.provider.ContactsContract.CommonDataKinds.Email;
@@ -67,6 +70,15 @@ public class ContactsProvider {
         add(Event.TYPE);
     }};
 
+    private static final List<String> AIDO_PROJECTION = new ArrayList<String>() {{
+        add(ContactsContract.CommonDataKinds.Contactables.RAW_CONTACT_ID);
+        add(ContactsContract.CommonDataKinds.Contactables.DISPLAY_NAME);
+        add(ContactsContract.Data.MIMETYPE);
+        add(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        add(ContactsContract.CommonDataKinds.Email.ADDRESS);
+        add(ContactsContract.CommonDataKinds.Contactables.CONTACT_LAST_UPDATED_TIMESTAMP);
+    }};
+
     private static final List<String> FULL_PROJECTION = new ArrayList<String>() {{
         addAll(JUST_ME_PROJECTION);
     }};
@@ -108,7 +120,7 @@ public class ContactsProvider {
         return contacts;
     }
 
-     public WritableMap getContactByRawId(String contactRawId) {
+    public WritableMap getContactByRawId(String contactRawId) {
 
         // Get Contact Id from Raw Contact Id
         String[] projections = new String[]{ContactsContract.RawContacts.CONTACT_ID};
@@ -141,11 +153,11 @@ public class ContactsProvider {
         Map<String, Contact> matchingContacts;
         {
             Cursor cursor = contentResolver.query(
-                ContactsContract.Data.CONTENT_URI,
-                FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
-                ContactsContract.RawContacts.CONTACT_ID + " = ?",
-                new String[]{contactId},
-                null
+                    ContactsContract.Data.CONTENT_URI,
+                    FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
+                    ContactsContract.RawContacts.CONTACT_ID + " = ?",
+                    new String[]{contactId},
+                    null
             );
 
             try {
@@ -156,12 +168,143 @@ public class ContactsProvider {
                 }
             }
         }
-        
+
         if(matchingContacts.values().size() > 0) {
             return matchingContacts.values().iterator().next().toMap();
         }
-        
-       return null;
+
+        return null;
+    }
+
+    public WritableArray getContactBatch(Integer batchSize, Double lastModificationDate) {
+        Map<String, AidoContact> contactMap = new HashMap<>();
+        Cursor cursor = contentResolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                AIDO_PROJECTION.toArray(new String[AIDO_PROJECTION.size()]),
+                "(" + ContactsContract.Data.MIMETYPE + "=? OR "
+                        + ContactsContract.Data.MIMETYPE + "=? ) AND "
+                        + ContactsContract.CommonDataKinds.Contactables.CONTACT_LAST_UPDATED_TIMESTAMP + " > " + lastModificationDate,
+                new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE,
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE},
+                ContactsContract.CommonDataKinds.Contactables.CONTACT_LAST_UPDATED_TIMESTAMP + " ASC"
+        );
+        try {
+            while (cursor != null && cursor.moveToNext()) {
+                String id = cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.RAW_CONTACT_ID));
+
+                long modificationTimestamp = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+
+                if (!contactMap.containsKey(id)) {
+                    contactMap.put(id, new AidoContact(id));
+                }
+
+                AidoContact contact = contactMap.get(id);
+
+                contact.compositeName = cursor.getString(cursor.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+                contact.modificationTimestamp = modificationTimestamp;
+
+                String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
+                if (mimeType.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
+                    String email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+                    if (!TextUtils.isEmpty(email)) {
+                        contact.emailAddresses.add(email);
+                    }
+                } else if (mimeType.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
+                    String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    if (!TextUtils.isEmpty(phoneNumber)) {
+                        contact.phoneNumbers.add(phoneNumber);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("ContactProvider", "loadContact error" + ex.getMessage(), ex);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        WritableArray contacts = Arguments.createArray();
+        for (AidoContact contact : contactMap.values()) {
+            contacts.pushMap(contact.toMap());
+        }
+
+        return contacts;
+    }
+
+    public static class AidoContact {
+        private String recordID;
+        private String compositeName;
+        private Set<String> emailAddresses = new HashSet<>();
+        private Set<String> phoneNumbers = new HashSet<>();
+        private long modificationTimestamp;
+
+        AidoContact(String id) {
+            this.recordID = id;
+        }
+
+        public String getRecordID() {
+            return recordID;
+        }
+
+        public void setRecordID(String recordID) {
+            this.recordID = recordID;
+        }
+
+        public String getCompositeName() {
+            return compositeName;
+        }
+
+        public void setCompositeName(String compositeName) {
+            this.compositeName = compositeName;
+        }
+
+        public Set<String> getEmailAddresses() {
+            return emailAddresses;
+        }
+
+        public void setEmailAddresses(Set<String> emailAddresses) {
+            this.emailAddresses = emailAddresses;
+        }
+
+        public Set<String> getPhoneNumbers() {
+            return phoneNumbers;
+        }
+
+        public void setPhoneNumbers(Set<String> phoneNumbers) {
+            this.phoneNumbers = phoneNumbers;
+        }
+
+        public long getModificationTimestamp() {
+            return modificationTimestamp;
+        }
+
+        public void setModificationTimestamp(long modificationTimestamp) {
+            this.modificationTimestamp = modificationTimestamp;
+        }
+
+        public WritableMap toMap() {
+            WritableMap contact = Arguments.createMap();
+            contact.putString("recordID", recordID);
+            contact.putString("compositeName", compositeName);
+            contact.putDouble("modificationTimestamp", modificationTimestamp);
+
+            WritableArray phoneNumbersJSON = Arguments.createArray();
+            for (String item : phoneNumbers) {
+                phoneNumbersJSON.pushString(item);
+            }
+            contact.putArray("phoneNumbers", phoneNumbersJSON);
+
+            WritableArray addressesJSON = Arguments.createArray();
+            for (String item : emailAddresses) {
+                addressesJSON.pushString(item);
+            }
+            contact.putArray("emailAddresses", addressesJSON);
+
+            return contact;
+        }
     }
 
     public WritableArray getContacts() {

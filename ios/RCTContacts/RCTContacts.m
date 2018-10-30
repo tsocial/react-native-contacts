@@ -121,7 +121,7 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
         NSMutableArray *contactDicts = [[NSMutableArray alloc] init];
         
         [contacts enumerateObjectsUsingBlock:^(APContact * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSDictionary *contactDictionary = [self contactToDictionary:obj];
+            NSDictionary *contactDictionary = [self contactToDictionary:obj retainPhoneAndAddressLabel: NO];
             [contactDicts addObject:contactDictionary];
         }];
         
@@ -145,7 +145,7 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
         NSMutableArray *contactDicts = [[NSMutableArray alloc] init];
         
         [contacts enumerateObjectsUsingBlock:^(APContact * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSDictionary *contactDictionary = [self contactToDictionary:obj];
+            NSDictionary *contactDictionary = [self contactToDictionary:obj retainPhoneAndAddressLabel: YES];
             [contactDicts addObject:contactDictionary];
         }];
         
@@ -153,7 +153,7 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
     }];
 }
 
--(NSDictionary*) contactToDictionary:(APContact *) person
+-(NSDictionary*) contactToDictionary:(APContact *) person retainPhoneAndAddressLabel:(BOOL) retainLabel
 {
     NSMutableDictionary* output = [NSMutableDictionary dictionary];
     
@@ -171,39 +171,61 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
     }
     
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
-    for (APPhone *phone in person.phones) {
-        NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
-        NSString* label = phone.localizedLabel;
-        NSString* value = phone.number;
-        
-        if(value) {
-            if (value) {
-                [phoneDict setObject: value forKey:@"number"];
-            }
-            if (label) {
-                [phoneDict setObject: label forKey:@"label"];
-            }
-            [phoneNumbers addObject:phoneDict];
-        }
-    }
-    [output setObject: phoneNumbers forKey:@"phoneNumbers"];
-    
     NSMutableArray *emails = [[NSMutableArray alloc] init];
-    for (APEmail *email in person.emails) {
-        NSMutableDictionary* emailDict = [NSMutableDictionary dictionary];
-        NSString* label = email.localizedLabel;
-        NSString* value = email.address;
+
+    if (retainLabel) {
+        for (APPhone *phone in person.phones) {
+            NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
+            NSString* value = phone.number;
+            
+            if(value) {
+                [phoneNumbers addObject:value];
+            }
+        }
         
-        if(value) {
-            if (value) {
-                [emailDict setObject: value forKey:@"email"];
+        for (APEmail *email in person.emails) {
+            NSMutableDictionary* emailDict = [NSMutableDictionary dictionary];
+            NSString* value = email.address;
+            
+            if(value) {
+                [emails addObject:value];
             }
-            if (label) {
-                [emailDict setObject: label forKey:@"label"];
+        }
+    } else {
+        for (APPhone *phone in person.phones) {
+            NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
+            NSString* label = phone.localizedLabel;
+            NSString* value = phone.number;
+            
+            if(value) {
+                if (value) {
+                    [phoneDict setObject: value forKey:@"number"];
+                }
+                if (label) {
+                    [phoneDict setObject: label forKey:@"label"];
+                }
+                [phoneNumbers addObject:phoneDict];
             }
-            [emails addObject:emailDict];
+        }
+
+        for (APEmail *email in person.emails) {
+            NSMutableDictionary* emailDict = [NSMutableDictionary dictionary];
+            NSString* label = email.localizedLabel;
+            NSString* value = email.address;
+            
+            if(value) {
+                if (value) {
+                    [emailDict setObject: value forKey:@"email"];
+                }
+                if (label) {
+                    [emailDict setObject: label forKey:@"label"];
+                }
+                [emails addObject:emailDict];
+            }
         }
     }
+
+    [output setObject: phoneNumbers forKey:@"phoneNumbers"];
     [output setObject: emails forKey:@"emailAddresses"];
     
     return output;

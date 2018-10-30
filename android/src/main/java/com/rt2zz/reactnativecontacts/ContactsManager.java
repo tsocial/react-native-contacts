@@ -43,6 +43,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class ContactsManager extends ReactContextBaseJavaModule {
 
@@ -60,6 +61,10 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         mReactContext = reactContext;
     }
 
+    @ReactMethod
+    public void getBatch(Integer batchSize, Double lastModificationDate, Callback callback) {
+        getContactBatch(batchSize, lastModificationDate, callback);
+    }
     /*
      * Returns all contactable records on phone
      * queries CommonDataKinds.Contactables to get phones and emails
@@ -77,6 +82,21 @@ public class ContactsManager extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getAllWithoutPhotos(final Callback callback) {
         getAllContacts(callback);
+    }
+
+    private void getContactBatch(final Integer batchSize, final Double lastModificationDate, final Callback callback) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Context context = getReactApplicationContext();
+                ContentResolver cr = context.getContentResolver();
+
+                ContactsProvider contactsProvider = new ContactsProvider(cr);
+                WritableArray contacts = contactsProvider.getContactBatch(batchSize, lastModificationDate);
+
+                callback.invoke(null, contacts);
+            }
+        });
     }
 
     /**
