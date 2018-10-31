@@ -227,8 +227,43 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
 
     [output setObject: phoneNumbers forKey:@"phoneNumbers"];
     [output setObject: emails forKey:@"emailAddresses"];
+    [output setObject: [self getFilePathForThumbnailImage:person recordID:recordID] forKey:@"thumbnailPath"];
     
     return output;
+}
+
+- (NSString *)thumbnailFilePath:(NSString *)recordID
+{
+    NSString *filename = [recordID stringByReplacingOccurrencesOfString:@":ABPerson" withString:@""];
+    NSString* filepath = [NSString stringWithFormat:@"%@/rncontacts_%@.png", [self getPathForDirectory:NSCachesDirectory], filename];
+    return filepath;
+}
+
+-(NSString *) getFilePathForThumbnailImage:(APContact*) contact recordID:(NSString*) recordID
+{
+    NSString *filepath = [self thumbnailFilePath:recordID];
+    
+    if (contact.thumbnail){
+        NSData *contactImageData = UIImagePNGRepresentation(contact.thumbnail);
+        if (contactImageData) {
+            BOOL success = [[NSFileManager defaultManager] createFileAtPath:filepath contents:contactImageData attributes:nil];
+            
+            if (!success) {
+                NSLog(@"Unable to copy image");
+                return @"";
+            }
+            
+            return filepath;
+        }
+    }
+    
+    return @"";
+}
+
+- (NSString *)getPathForDirectory:(int)directory
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(directory, NSUserDomainMask, YES);
+    return [paths firstObject];
 }
 
 @end
