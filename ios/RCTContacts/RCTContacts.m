@@ -173,7 +173,7 @@ RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTRespons
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
     NSMutableArray *emails = [[NSMutableArray alloc] init];
 
-    if (retainLabel) {
+    if (!retainLabel) {
         for (APPhone *phone in person.phones) {
             NSMutableDictionary* phoneDict = [NSMutableDictionary dictionary];
             NSString* value = phone.number;
