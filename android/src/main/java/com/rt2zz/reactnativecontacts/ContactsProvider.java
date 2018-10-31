@@ -177,7 +177,7 @@ public class ContactsProvider {
     }
 
     public WritableArray getContactBatch(Integer batchSize, Double lastModificationDate) {
-        Map<String, AidoContact> contactMap = new HashMap<>();
+        Map<String, AidoContact> contactMap = new LinkedHashMap<>();
         Cursor cursor = contentResolver.query(
                 ContactsContract.Data.CONTENT_URI,
                 AIDO_PROJECTION.toArray(new String[AIDO_PROJECTION.size()]),
