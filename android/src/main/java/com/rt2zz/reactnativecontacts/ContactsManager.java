@@ -186,6 +186,7 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
         String company = contact.hasKey("company") ? contact.getString("company") : null;
         String jobTitle = contact.hasKey("jobTitle") ? contact.getString("jobTitle") : null;
         String department = contact.hasKey("department") ? contact.getString("department") : null;
+        String thumbnailPath = contact.hasKey("thumbnailPath") ? contact.getString("thumbnailPath") : null;
 
         ReadableArray phoneNumbers = contact.hasKey("phoneNumbers") ? contact.getArray("phoneNumbers") : null;
         int numOfPhones = 0;
@@ -293,14 +294,47 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
             contactData.add(structuredPostal);
         }
 
-        Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-        intent.putExtra(ContactsContract.Intents.Insert.NAME, displayName);
-        intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bitmap photo = null;
+        if (thumbnailPath != null && !thumbnailPath.isEmpty()) {
+            photo = BitmapFactory.decodeFile(thumbnailPath);
+            if (photo == null) {
+                try{
+                    photo = BitmapFactory.decodeStream(new java.net.URL(thumbnailPath).openStream());
+                } catch(Exception e) {
 
-        Context context = getReactApplicationContext();
-        context.startActivity(intent);
+                }
+            }
 
+            if (photo != null) {
+                ContentValues thumbnail = new ContentValues();
+                thumbnail.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE);
+                thumbnail.put(ContactsContract.CommonDataKinds.Photo.PHOTO, toByteArray(photo));
+
+                contactData.add(thumbnail);
+            }
+        }
+
+        String recordID = contact.hasKey("recordID") ? contact.getString("recordID") : null;
+
+        if (recordID != null) {
+            Intent intentEdit = new Intent(Intent.ACTION_EDIT, ContactsContract.Contacts.CONTENT_URI);
+            Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(recordID));
+            intentEdit.setDataAndType(contactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+            intentEdit.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
+            intentEdit.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
+            intentEdit.putExtra("finishActivityOnSaveCompleted", true);
+
+            Context context = getReactApplicationContext();
+            context.startActivity(intentEdit);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+            intent.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
+            intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            Context context = getReactApplicationContext();
+            context.startActivity(intent);
+        }
     }
 
     /*
