@@ -665,6 +665,35 @@ RCT_EXPORT_METHOD(deleteContact:(NSDictionary *)contactData callback:(RCTRespons
     return YES;
 }
 
+
+RCT_REMAP_METHOD(pickContact,
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+    self.resolve = resolve;
+    self.reject = reject;
+    CNContactStore * contactStore = [[CNContactStore alloc] init];
+    CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    switch (status) {
+        case CNAuthorizationStatusNotDetermined: {
+            [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * __nullable error) {
+                if (granted==YES) {
+                    [self presentContactPicker];
+                }
+                else {
+                    self.reject(@"access_denied", @"We need access to your contacts to use this feature, please go into your settings and enable it.", error);
+                }
+            }];
+        }
+            break;
+        case CNAuthorizationStatusAuthorized:
+            [self presentContactPicker];
+            break;
+        default:
+            self.reject(@"access_denied", @"We need access to your contacts to use this feature, please go into your settings and enable it.", nil);
+            break;
+    }
+}
+
 // MARK: - ABAddress
 RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInteger) modificationDate callback :(RCTResponseSenderBlock) callback)
 {
@@ -813,4 +842,36 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
     return @"";
 }
 
+
+- (UIViewController *)rootViewController {
+    UIViewController *vc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    while (vc.presentedViewController != nil) {
+        vc = vc.presentedViewController;
+    }
+    return vc;
+}
+
+
+- (void)presentContactPicker {
+    CNContactPickerViewController *pickerController = [[CNContactPickerViewController alloc] init];
+    pickerController.displayedPropertyKeys = @[CNContactPhoneNumbersKey];
+    pickerController.delegate = self;
+    [[self rootViewController] presentViewController:pickerController animated:true completion:nil];
+}
+
+// MARK: - CNContactPickerDelegate
+- (void)contactPicker:(CNContactPickerViewController *)picker didSelectContacts:(NSArray<CNContact*> *)contacts {
+    NSMutableArray *phones = [NSMutableArray array];
+    for (CNContact *contact in contacts) {
+        for (CNLabeledValue<CNPhoneNumber *> *phone in contact.phoneNumbers) {
+            NSString* value = [phone.value stringValue];
+            if (value) {
+                [phones addObject:value];
+            }
+        }
+    }
+    if (self.resolve) {
+        self.resolve(phones);
+    }
+}
 @end

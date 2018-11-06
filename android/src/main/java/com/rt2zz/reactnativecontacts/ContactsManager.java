@@ -1,17 +1,18 @@
 package com.rt2zz.reactnativecontacts;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.ContentUris;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.Manifest;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,6 +26,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -33,38 +36,36 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 
-public class ContactsManager extends ReactContextBaseJavaModule {
+public class ContactsManager extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private static final String PERMISSION_DENIED = "denied";
     private static final String PERMISSION_AUTHORIZED = "authorized";
     private static final String PERMISSION_READ_CONTACTS = Manifest.permission.READ_CONTACTS;
     private static final int PERMISSION_REQUEST_CODE = 888;
+    private static final int CONTACT_PICKER_RESULT = 1000;
 
     private static Callback requestCallback;
     private ReactContext mReactContext;
-
+    private Promise mContactPickerPromise;
 
     public ContactsManager(ReactApplicationContext reactContext) {
         super(reactContext);
         mReactContext = reactContext;
+        mReactContext.addActivityEventListener(this);
     }
 
     @ReactMethod
     public void getBatch(Integer batchSize, Double lastModificationDate, Callback callback) {
         getContactBatch(batchSize, lastModificationDate, callback);
     }
+
     /*
      * Returns all contactable records on phone
      * queries CommonDataKinds.Contactables to get phones and emails
@@ -711,6 +712,21 @@ public class ContactsManager extends ReactContextBaseJavaModule {
     }
 
     /*
+     * Open contact picker
+     */
+    @ReactMethod
+    public void pickContact(final Promise promise) {
+        Activity currentActivity = getCurrentActivity();
+        if (currentActivity != null) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+           //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContactPickerPromise = promise;
+            currentActivity.startActivityForResult(intent, CONTACT_PICKER_RESULT);
+        }
+    }
+
+
+    /*
      * Request permission
      */
     @ReactMethod
@@ -733,6 +749,55 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         requestCallback = callback;
         ActivityCompat.requestPermissions(currentActivity, new String[]{PERMISSION_READ_CONTACTS}, PERMISSION_REQUEST_CODE);
     }
+
+    /*
+     Start ActivityEventListener methods
+    */
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        if (requestCode == CONTACT_PICKER_RESULT) {
+            WritableArray phones = Arguments.createArray();
+            try {
+                if (resultCode == Activity.RESULT_OK) {
+                    switch (requestCode) {
+                        case CONTACT_PICKER_RESULT:
+                            Uri result = data.getData();
+                            String id = result.getLastPathSegment();
+                            Context ctx = getReactApplicationContext();
+                            ContentResolver cr = ctx.getContentResolver();
+                            Cursor cursor = cr.query(
+                                    CommonDataKinds.Phone.CONTENT_URI, null,
+                                    CommonDataKinds.Phone.CONTACT_ID + "=?",
+                                    new String[]{id}, null);
+                            try {
+                                while (cursor.moveToNext()) {
+                                    int phoneIdx = cursor.getColumnIndex(CommonDataKinds.Phone.DATA);
+                                    String phone = cursor.getString(phoneIdx);
+                                    phones.pushString(phone);
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+                            mContactPickerPromise.resolve(phones);
+                            break;
+                    }
+
+                } else {
+                    // gracefully handle failure
+                    mContactPickerPromise.reject(Integer.toString(resultCode), "The user cancelled or there was no contact");
+                }
+            } catch (Exception e) {
+                mContactPickerPromise.reject(Integer.toString(resultCode), e.getMessage(), e);
+            }
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // No need to implement but need override to avoid crash
+    }
+
+
 
     protected static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                      @NonNull int[] grantResults) {
