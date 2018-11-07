@@ -5,6 +5,11 @@
 #import "APAddressBook.h"
 #import "APContact.h"
 
+@interface RCTContacts() <CNContactPickerDelegate, UINavigationControllerDelegate>
+@property (nonatomic, strong) RCTPromiseResolveBlock resolve;
+@property (nonatomic, strong) RCTPromiseRejectBlock reject;
+
+@end
 @implementation RCTContacts {
     CNContactStore * contactStore;
 }
