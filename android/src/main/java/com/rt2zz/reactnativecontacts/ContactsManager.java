@@ -38,6 +38,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -805,9 +806,13 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
                                     new String[]{id}, null);
                             try {
                                 while (cursor.moveToNext()) {
+                                    WritableMap map = new WritableNativeMap();
+                                    String name = cursor.getString(cursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME));
                                     int phoneIdx = cursor.getColumnIndex(CommonDataKinds.Phone.DATA);
                                     String phone = cursor.getString(phoneIdx);
-                                    phones.pushString(phone);
+                                    map.putString("name", name);
+                                    map.putString("phone", phone);
+                                    phones.pushMap(map);
                                 }
                             } finally {
                                 cursor.close();

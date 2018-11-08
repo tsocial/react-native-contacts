@@ -847,6 +847,23 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
     return @"";
 }
 
+- (NSString *)fullNameOfContact:(CNContact *)contact {
+    NSString *givenName = contact.givenName;
+    NSString *familyName = contact.familyName;
+    NSString *middleName = contact.middleName;
+    NSMutableArray *array = [NSMutableArray array];
+    if (givenName.length > 0) {
+        [array addObject:givenName];
+    }
+    if (middleName.length > 0) {
+        [array addObject:middleName];
+    }
+    if (familyName.length > 0) {
+        [array addObject:familyName];
+    }
+    return [[array componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 
 - (UIViewController *)rootViewController {
     UIViewController *vc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
@@ -866,17 +883,19 @@ RCT_EXPORT_METHOD(getBatch: (NSUInteger)batchSize lastModificationDate: (NSUInte
 
 // MARK: - CNContactPickerDelegate
 - (void)contactPicker:(CNContactPickerViewController *)picker didSelectContacts:(NSArray<CNContact*> *)contacts {
-    NSMutableArray *phones = [NSMutableArray array];
+    NSMutableArray *list = [NSMutableArray array];
     for (CNContact *contact in contacts) {
+        NSString *name = [self fullNameOfContact:contact];
         for (CNLabeledValue<CNPhoneNumber *> *phone in contact.phoneNumbers) {
             NSString* value = [phone.value stringValue];
             if (value) {
-                [phones addObject:value];
+                [list addObject:@{@"name": name, @"phone": value}];
             }
         }
+        
     }
     if (self.resolve) {
-        self.resolve(phones);
+        self.resolve(list);
     }
 }
 @end
