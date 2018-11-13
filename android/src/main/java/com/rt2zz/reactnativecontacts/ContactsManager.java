@@ -316,26 +316,20 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
         }
 
         String recordID = contact.hasKey("recordID") ? contact.getString("recordID") : null;
-
+        Intent intent = null;
         if (recordID != null) {
-            Intent intentEdit = new Intent(Intent.ACTION_EDIT, ContactsContract.Contacts.CONTENT_URI);
+            intent = new Intent(Intent.ACTION_EDIT, ContactsContract.Contacts.CONTENT_URI);
             Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(recordID));
-            intentEdit.setDataAndType(contactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
-            intentEdit.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
-            intentEdit.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
-            intentEdit.putExtra("finishActivityOnSaveCompleted", true);
-
-            Context context = getReactApplicationContext();
-            context.startActivity(intentEdit);
+            intent.setDataAndType(contactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         } else {
-            Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-            intent.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
-            intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            Context context = getReactApplicationContext();
-            context.startActivity(intent);
+            intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
         }
+        intent.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
+        intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
+        intent.putExtra("finishActivityOnSaveCompleted", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Context context = getReactApplicationContext();
+        context.startActivity(intent);
     }
 
     /*
@@ -754,7 +748,7 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
         Activity currentActivity = getCurrentActivity();
         if (currentActivity != null) {
             Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-           //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContactPickerPromise = promise;
             currentActivity.startActivityForResult(intent, CONTACT_PICKER_RESULT);
         }
