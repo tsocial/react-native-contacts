@@ -323,8 +323,8 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
             intent.setDataAndType(contactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         } else {
             intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+            intent.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
         }
-        intent.putExtra(ContactsContract.Intents.Insert.NAME, givenName);
         intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
         intent.putExtra("finishActivityOnSaveCompleted", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
