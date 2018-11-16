@@ -156,6 +156,7 @@ RCT_EXPORT_METHOD(getAllWithoutPhotos:(RCTResponseSenderBlock) callback)
     
     if (givenName) {
         [output setObject: (givenName) ? givenName : @"" forKey:@"givenName"];
+        [output setObject: (givenName) ? givenName : @"" forKey:@"compositeName"];
     }
     
     if (familyName) {
