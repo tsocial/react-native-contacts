@@ -399,9 +399,10 @@ RCT_EXPORT_METHOD(openContactForm:(NSDictionary *)contactData callback:(RCTRespo
         contact = [[CNMutableContact alloc] init];
         controller = [CNContactViewController viewControllerForNewContact:contact];
     } else {
-        controller = [CNContactViewController viewControllerForContact:contact];
+        controller = [CNContactViewController viewControllerForNewContact:contact];
         UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(tapLeftButton:)];
         controller.navigationItem.leftBarButtonItem = leftButton;
+        controller.title = @"Edit Contact";
     }
     [self updateRecord:contact withData:contactData];
     
