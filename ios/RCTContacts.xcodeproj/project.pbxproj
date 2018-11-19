@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		643739D6020E6D5F7489A243 /* libPods-RCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BE863815DA021B3E529029 /* libPods-RCTContacts.a */; };
 		B63FC3151FEA3AD20051B2A4 /* RCTContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */; };
 		FAA3357E21819B9800EF9778 /* APName.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354721819B9800EF9778 /* APName.m */; };
 		FAA3357F21819B9800EF9778 /* APJob.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA3354921819B9800EF9778 /* APJob.m */; };
@@ -46,7 +47,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FC5F5F326F7B6A2B2204871 /* Pods-RCTContacts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCTContacts.release.xcconfig"; path = "Pods/Target Support Files/Pods-RCTContacts/Pods-RCTContacts.release.xcconfig"; sourceTree = "<group>"; };
 		1441618E1BD0A79300FA4F59 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTContacts.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		90A869998765098BB1D9D13E /* Pods-RCTContacts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCTContacts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RCTContacts/Pods-RCTContacts.debug.xcconfig"; sourceTree = "<group>"; };
+		B3BE863815DA021B3E529029 /* libPods-RCTContacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RCTContacts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B63FC3131FEA3AD20051B2A4 /* RCTContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTContacts.h; sourceTree = "<group>"; };
 		B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTContacts.m; sourceTree = "<group>"; };
 		FAA3354421819B9800EF9778 /* APAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAddressBook.h; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				643739D6020E6D5F7489A243 /* libPods-RCTContacts.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +131,8 @@
 				FAA3350521819B3300EF9778 /* APAddressBook */,
 				1441618F1BD0A79300FA4F59 /* RCTContacts */,
 				145CC5711AED80100006342E /* Products */,
+				2442BD87DEF6D68930FBA889 /* Pods */,
+				2A1B33DA43C6C670805AFA61 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +142,23 @@
 				1441618E1BD0A79300FA4F59 /* libRCTContacts.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2442BD87DEF6D68930FBA889 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				90A869998765098BB1D9D13E /* Pods-RCTContacts.debug.xcconfig */,
+				0FC5F5F326F7B6A2B2204871 /* Pods-RCTContacts.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2A1B33DA43C6C670805AFA61 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B3BE863815DA021B3E529029 /* libPods-RCTContacts.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FAA3350521819B3300EF9778 /* APAddressBook */ = {
@@ -288,6 +312,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 144161941BD0A79300FA4F59 /* Build configuration list for PBXNativeTarget "RCTContacts" */;
 			buildPhases = (
+				2ED2978993DC64195126B063 /* [CP] Check Pods Manifest.lock */,
 				1441618A1BD0A79300FA4F59 /* Sources */,
 				1441618B1BD0A79300FA4F59 /* Frameworks */,
 				1441618C1BD0A79300FA4F59 /* CopyFiles */,
@@ -332,6 +357,31 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2ED2978993DC64195126B063 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RCTContacts-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1441618A1BD0A79300FA4F59 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -369,6 +419,7 @@
 /* Begin XCBuildConfiguration section */
 		144161951BD0A79300FA4F59 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90A869998765098BB1D9D13E /* Pods-RCTContacts.debug.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
@@ -386,6 +437,7 @@
 		};
 		144161961BD0A79300FA4F59 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0FC5F5F326F7B6A2B2204871 /* Pods-RCTContacts.release.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
