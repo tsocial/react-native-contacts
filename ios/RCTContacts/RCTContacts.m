@@ -4,6 +4,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "APAddressBook.h"
 #import "APContact.h"
+#import "NBPhoneNumberUtil.h"
+#import "NBPhoneNumber.h"
 
 @interface RCTContacts() <CNContactPickerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong) RCTPromiseResolveBlock resolve;
@@ -83,26 +85,36 @@ RCT_EXPORT_METHOD(getContactsMatchingString:(NSString *)string callback:(RCTResp
 }
 
 -(void) getAllContacts:(RCTResponseSenderBlock) callback
+       withPhoneNumber:(NSString*) phoneNumber
         withThumbnails:(BOOL) withThumbnails
 {
     CNContactStore* contactStore = [self contactsStore:callback];
     if(!contactStore)
         return;
     
-    [self retrieveContactsFromAddressBook:contactStore withThumbnails:withThumbnails withCallback:callback];
+    [self retrieveContactsFromAddressBook:contactStore
+                            byPhoneNumber:phoneNumber
+                           withThumbnails:withThumbnails
+                             withCallback:callback];
 }
 
 RCT_EXPORT_METHOD(getAll:(RCTResponseSenderBlock) callback)
 {
-    [self getAllContacts:callback withThumbnails:true];
+    [self getAllContacts:callback withPhoneNumber:nil withThumbnails:true];
 }
 
 RCT_EXPORT_METHOD(getAllWithoutPhotos:(RCTResponseSenderBlock) callback)
 {
-    [self getAllContacts:callback withThumbnails:false];
+    [self getAllContacts:callback withPhoneNumber:nil withThumbnails:false];
 }
 
--(void) retrieveContactsFromAddressBook:(CNContactStore*)contactStore
+RCT_EXPORT_METHOD(getByPhoneNumber:(NSString*) phoneNumber callback:(RCTResponseSenderBlock) callback)
+{
+    [self getAllContacts:callback withPhoneNumber:phoneNumber withThumbnails:true];
+}
+
+-(void) retrieveContactsFromAddressBook:(CNContactStore*) contactStore
+                          byPhoneNumber:(NSString*) phoneNumber
                          withThumbnails:(BOOL) withThumbnails
                            withCallback:(RCTResponseSenderBlock) callback
 {
@@ -132,11 +144,40 @@ RCT_EXPORT_METHOD(getAllWithoutPhotos:(RCTResponseSenderBlock) callback)
     
     CNContactFetchRequest * request = [[CNContactFetchRequest alloc]initWithKeysToFetch:keysToFetch];
     BOOL success = [contactStore enumerateContactsWithFetchRequest:request error:&contactError usingBlock:^(CNContact * __nonnull contact, BOOL * __nonnull stop){
-        NSDictionary *contactDict = [self contactToDictionary: contact withThumbnails:withThumbnails];
-        [contacts addObject:contactDict];
+        
+        if (!phoneNumber) {
+            NSDictionary *contactDict = [self contactToDictionary: contact withThumbnails:withThumbnails];
+            [contacts addObject:contactDict];
+        } else {
+            for (CNLabeledValue<CNPhoneNumber*>* labeledValue in contact.phoneNumbers) {
+                NSString* value = [[labeledValue value] stringValue];
+                if(value) {
+                    NSString *phone1 = [self toNationalFormat:value];
+                    NSString *phone2 = [self toNationalFormat:phoneNumber];
+                    
+                    if ([phone1 isEqual: phone2]) {
+                        NSDictionary *contactDict = [self contactToDictionary: contact withThumbnails:withThumbnails];
+                        [contacts addObject:contactDict];
+                        *stop = YES;
+                        break;
+                    }
+                }
+            }
+        }
     }];
     
     callback(@[[NSNull null], contacts]);
+}
+
+-(NSString *) toNationalFormat: (NSString *)phoneNumber {
+    NBPhoneNumberUtil *phoneUtil = [[NBPhoneNumberUtil alloc] init];
+    NSError *anError = nil;
+    NBPhoneNumber *myNumber = [phoneUtil parse:phoneNumber
+                                 defaultRegion:@"VN" error:&anError];
+    if (anError) {
+        NSLog(@"Parse phone number failed - error: %@", [anError localizedDescription]);
+    }
+    return [myNumber.nationalNumber stringValue];
 }
 
 -(NSDictionary*) contactToDictionary:(CNContact *) person
