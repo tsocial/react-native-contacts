@@ -106,6 +106,8 @@ public class ContactsProvider {
 
             try {
                 matchingContacts = loadContactsFrom(cursor);
+            } catch (Exception e) {
+                Log.e("ContactProvider", e.getMessage(), e);
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -162,6 +164,8 @@ public class ContactsProvider {
 
             try {
                 matchingContacts = loadContactsFrom(cursor);
+            } catch (Exception e) {
+                Log.e("ContactProvider", e.getMessage(), e);
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -323,6 +327,8 @@ public class ContactsProvider {
 
             try {
                 justMe = loadContactsFrom(cursor);
+            } catch (Exception e) {
+                Log.e("ContactProvider", e.getMessage(), e);
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -342,6 +348,8 @@ public class ContactsProvider {
 
             try {
                 everyoneElse = loadContactsFrom(cursor);
+            } catch (Exception e) {
+                Log.e("ContactProvider", e.getMessage(), e);
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -524,6 +532,8 @@ public class ContactsProvider {
                     return rawPhotoURI;
                 }
             }
+        } catch (Exception e) {
+            Log.e("ContactProvider", e.getMessage(), e);
         } finally {
             if (cursor != null) {
                 cursor.close();
