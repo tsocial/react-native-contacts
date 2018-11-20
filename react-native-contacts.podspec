@@ -14,5 +14,6 @@ Pod::Spec.new do |s|
   s.source_files   = 'ios/RCTContacts/*.{h,m}'
 
   s.dependency 'React'
+  s.dependency 'libPhoneNumber-iOS', '~> 0.8'
 
 end
