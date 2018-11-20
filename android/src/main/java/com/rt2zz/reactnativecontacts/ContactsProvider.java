@@ -94,24 +94,22 @@ public class ContactsProvider {
     }
 
     public WritableArray getContactsMatchingString(String searchString) {
-        Map<String, Contact> matchingContacts;
-        {
-            Cursor cursor = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
-                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?",
-                    new String[]{"%" + searchString + "%"},
-                    null
-            );
+        Map<String, Contact> matchingContacts = new HashMap<>();
+        Cursor cursor = contentResolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
+                ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?",
+                new String[]{"%" + searchString + "%"},
+                null
+        );
 
-            try {
-                matchingContacts = loadContactsFrom(cursor);
-            } catch (Exception e) {
-                Log.e("ContactProvider", e.getMessage(), e);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+        try {
+            matchingContacts = loadContactsFrom(cursor);
+        } catch (Exception e) {
+            Log.e("ContactProvider", e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
 
@@ -152,28 +150,27 @@ public class ContactsProvider {
 
     public WritableMap getContactById(String contactId) {
 
-        Map<String, Contact> matchingContacts;
-        {
-            Cursor cursor = contentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
-                    ContactsContract.RawContacts.CONTACT_ID + " = ?",
-                    new String[]{contactId},
-                    null
-            );
+        Map<String, Contact> matchingContacts = new HashMap<>();
 
-            try {
-                matchingContacts = loadContactsFrom(cursor);
-            } catch (Exception e) {
-                Log.e("ContactProvider", e.getMessage(), e);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+        Cursor cursor = contentResolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                FULL_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
+                ContactsContract.RawContacts.CONTACT_ID + " = ?",
+                new String[]{contactId},
+                null
+        );
+
+        try {
+            matchingContacts = loadContactsFrom(cursor);
+        } catch (Exception e) {
+            Log.e("ContactProvider", e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
 
-        if(matchingContacts.values().size() > 0) {
+        if (matchingContacts.values().size() > 0) {
             return matchingContacts.values().iterator().next().toMap();
         }
 
@@ -315,7 +312,7 @@ public class ContactsProvider {
     }
 
     public WritableArray getContacts() {
-        Map<String, Contact> justMe;
+        Map<String, Contact> justMe = new HashMap<>();
         {
             Cursor cursor = contentResolver.query(
                     Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI, ContactsContract.Contacts.Data.CONTENT_DIRECTORY),
@@ -336,7 +333,7 @@ public class ContactsProvider {
             }
         }
 
-        Map<String, Contact> everyoneElse;
+        Map<String, Contact> everyoneElse = new HashMap<>();
         {
             Cursor cursor = contentResolver.query(
                     ContactsContract.Data.CONTENT_URI,
