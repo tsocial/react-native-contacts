@@ -1,5 +1,6 @@
 declare module 'react-native-contacts' {
   export function getBatch(batchSize: number, lastModificationDate: number, callback: (error: any, contacts: Contact[]) => void): void;
+  export function getByPhoneNumber(phoneNumber: string, callback: (error: any, contacts: Contact[]) => void): void;
   export function getAll(callback: (error: any, contacts: Contact[]) => void): void;
   export function getAllWithoutPhotos(callback: (error: any, contacts: Contact[]) => void): void;
   export function getPhotoForId(contactId: string, callback: (error: any, photoUri: string) => void): void;
