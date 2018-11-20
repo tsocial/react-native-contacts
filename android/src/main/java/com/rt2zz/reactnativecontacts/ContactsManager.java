@@ -67,6 +67,11 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
         getContactBatch(batchSize, lastModificationDate, callback);
     }
 
+    @ReactMethod
+    public void getByPhoneNumber(final String phoneNumber, final Callback callback) {
+        getContactsByPhoneNumber(phoneNumber, callback);
+    }
+
     /*
      * Returns all contactable records on phone
      * queries CommonDataKinds.Contactables to get phones and emails
@@ -145,6 +150,20 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
                 ContentResolver cr = context.getContentResolver();
                 ContactsProvider contactsProvider = new ContactsProvider(cr);
                 WritableArray contacts = contactsProvider.getContactsMatchingString(searchString);
+
+                callback.invoke(null, contacts);
+            }
+        });
+    }
+
+    private void getContactsByPhoneNumber(final String phoneNumber, final Callback callback) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Context context = getReactApplicationContext();
+                ContentResolver cr = context.getContentResolver();
+                ContactsProvider contactsProvider = new ContactsProvider(cr);
+                WritableArray contacts = contactsProvider.getContactsByPhoneNumber(phoneNumber);
 
                 callback.invoke(null, contacts);
             }
