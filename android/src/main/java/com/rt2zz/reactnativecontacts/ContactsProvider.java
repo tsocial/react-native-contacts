@@ -210,6 +210,16 @@ public class ContactsProvider {
     }
 
     public WritableArray getContactBatch(Integer batchSize, Double lastModificationDate) {
+        List<AidoContact> contactList = getContactBatchList(batchSize, lastModificationDate);
+        WritableArray contacts = Arguments.createArray();
+        for (AidoContact contact : contactList) {
+            contacts.pushMap(contact.toMap());
+        }
+
+        return contacts;
+    }
+
+    public List<AidoContact> getContactBatchList(Integer batchSize, Double lastModificationDate) {
         Map<String, AidoContact> contactMap = new LinkedHashMap<>();
         Cursor cursor = contentResolver.query(
                 ContactsContract.Data.CONTENT_URI,
@@ -261,13 +271,8 @@ public class ContactsProvider {
                 cursor.close();
             }
         }
+        return new ArrayList<>(contactMap.values());
 
-        WritableArray contacts = Arguments.createArray();
-        for (AidoContact contact : contactMap.values()) {
-            contacts.pushMap(contact.toMap());
-        }
-
-        return contacts;
     }
 
     public static class AidoContact {
